@@ -5,7 +5,7 @@
 This website monitors the deployment status of web/build projects hosted on GitHub Pages, Netlify, and Vercel. It provides details such as:
 - Deployment Status
 - Deployment Time (When Build Was Deployed)
-- Deployment Time (When Code Was Pushed To Github Repo) 
+- Push Time (When Code Was Pushed To Github Repo) 
 - Commit time 
 - Commit message
 
