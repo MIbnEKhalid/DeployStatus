@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <link rel="icon" type="image/x-icon"
+        href="https://raw.githubusercontent.com/MIbnEKhalid/Blog.MIbnEKhalid.github.io/main/src/components/icons/adminIconShield.svg">
+    <title>Deploy Status</title>
+    <style>
+        :root {
+            --primary-color: #4caf50;
+            --secondary-color: #1e1e2f;
+            --accent-color: #3a3a57;
+            --text-color: #e5e5e5;
+            --background-color: rgba(30, 30, 47, 0.85);
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --hover-shadow-color: rgba(76, 175, 80, 0.5);
+            --success-color: #4caf50;
+            --error-color: #f44336;
+            --neutral-color: #ff9800;
+        }
+
+        body,
+        html {
+            background: #3a3a57;
+            color: var(--text-color);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        details {
+            max-width: 100%;
+            width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: var(--background-color);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px var(--shadow-color);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        @media(max-width: 750px) {
+            details {
+                max-width: 80%;
+                width: 400px;
+
+            }
+
+        }
+
+
+        details[open] {
+            transform: scale(1.05);
+            margin-top: 30px;
+        }
+
+        summary {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        .deployInfo {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: var(--primary-color);
+            text-shadow: 0px 0px 10px var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .status-p {
+            font-size: 1em;
+            margin: 15px 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .status-p:hover {
+            box-shadow: 0 6px 12px var(--hover-shadow-color);
+        }
+
+        .deployStatus {
+            color: var(--neutral-color);
+            /* Default color for status */
+        }
+
+        .deployStatus.success {
+            color: var(--success-color);
+        }
+
+        .deployStatus.error {
+            color: var(--error-color);
+        }
+
+        .check-status {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 8px 15px var(--shadow-color);
+            transition: background 0.4s, box-shadow 0.4s;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+            outline: none;
+            color: #fff;
+            border: 2px solid transparent;
+            transition: all 0.4s ease;
+        }
+
+        .check-status:hover {
+            background: transparent;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            transition: all 0.4s ease;
+        }
+
+        .message-box {
+            padding: 10px;
+            border-radius: 8px;
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            margin: 10px 0;
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    <script>
+        async function checkStatus(id, repoName) {
+            const owner = 'MIbnEKhalid';
+            const repo = `${repoName}`;
+            //const token = '';
+            const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs`;
+            showMessage(id, 'Updating Progeress...');
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        //'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                const data = await response.json();
+                if (data && data.workflow_runs && data.workflow_runs.length > 0) {
+                    const latestRun = data.workflow_runs[0];
+                    const status = latestRun.conclusion;
+                    const message = status === 'success' ? 'Deployment successful!' : 'Deployment failed!';
+                    const deployTime = status === 'success' ? new Date(latestRun.updated_at).toLocaleString() : 'Not available (deployment failed)';
+                    const deployStatusElem = document.querySelector(`#${id} .deployStatus`);
+                    deployStatusElem.innerText = `Deployment Status: ${message}`;
+                    if (status === 'success') {
+                        deployStatusElem.classList.add('success');
+                        deployStatusElem.classList.remove('error');
+                    } else {
+                        deployStatusElem.classList.add('error');
+                        deployStatusElem.classList.remove('success');
+                    }
+                    document.querySelector(`#${id} .deploytime`).innerText = `Deployed at: ${deployTime}`;
+                    document.querySelector(`#${id} .commitTime`).innerText = `Latest Commit Time: ${new Date(latestRun.head_commit.timestamp).toLocaleString()}`;
+                    document.querySelector(`#${id} .commitMessage`).innerText = `Commit Message: ${latestRun.head_commit.message}`;
+                    document.querySelector(`#${id} .error`).style.display = 'none';
+                    document.querySelector(`#${id} .error`).innerText = '';
+                    showMessage(id, 'Update Done!');
+                } else {
+                    throw new Error('No workflow runs found.');
+                }
+            } catch (error) {
+                document.querySelector(`#${id} .deploytime`).innerText = `Deployed at: Not available (error occurred)`;
+                document.querySelector(`#${id} .deployStatus`).innerText = `Deployment Status: Error occurred`;
+                document.querySelector(`#${id} .commitTime`).innerText = `Latest Commit Time: Not available (error occurred)`;
+                document.querySelector(`#${id} .commitMessage`).innerText = `Commit Message: Not available (error occurred)`;
+                document.querySelector(`#${id} .error`).innerText = `Error: ${error.message}`;
+                document.querySelector(`#${id} .error`).style.display = 'block';
+                document.querySelector(`#${id} .deployStatus`).classList.add('error');
+                document.querySelector(`#${id} .deployStatus`).classList.remove('success');
+                showMessage(id, 'Update Done!');
+            }
+            console.log('Status checked');
+        }
+
+        function showMessage(id, message) {
+            const messageBox = document.querySelector(`#${id} .message-box`);
+            messageBox.innerText = message;
+            messageBox.style.display = 'block';
+
+            // Hide the message after 5 seconds
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 1500);
+        }
+
+        const GithubRepos = [
+            { id: 'mainWeb', RepoName: 'MIbnEKhalid.github.io', open: 'true' },
+            { id: 'blogWeb', RepoName: 'Blog.MIbnEKhalid.github.io' },
+            { id: 'docWebdsaa', RepoName: 'SMP-Web' }
+        ];
+
+        // Dynamically generate the repository status checks
+        window.onload = function () {
+            const container = document.getElementById('status-container');
+            GithubRepos.forEach(repo => {
+                const detailsElement = document.createElement('details');
+                detailsElement.id = repo.id;
+
+                // Add 'open' attribute if the 'open' property is set to 'true'
+                if (repo.open === 'true') {
+                    detailsElement.setAttribute('open', 'true');
+                }
+
+                detailsElement.innerHTML = `
+            <summary>${repo.RepoName} Status</summary>
+            <div class="deployInfo">
+                <p class="status-p"> <span class="deployStatus">Deployment Status: None</span></p>
+                <p class="status-p"><span class="deploytime">Deployed at: 00/00/0000, 0:00:00 AM</span></p>
+                <p class="status-p"><span class="commitTime">Latest Commit Time: 00/0/0000, 0:00:00 AM</span></p>
+                <p class="status-p"><span class="commitMessage">Commit Message: {Message}</span></p>
+            </div>
+            <div class="error" style="display: none; color: red;"></div>
+            <button class="check-status" onclick="checkStatus('${repo.id}', '${repo.RepoName}')">Check Status</button>
+            <div class="message-box" style="display: none;"></div>
+        `;
+                container.appendChild(detailsElement);
+                checkStatus(repo.id, repo.RepoName);
+
+            });
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <div>
+        <div id="status-container"></div>
+    </div>
+</body>
+
+</html>
