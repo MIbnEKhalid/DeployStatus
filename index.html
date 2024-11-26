@@ -145,13 +145,17 @@
             color: #0c5460;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
+        .error {
+            margin-bottom: 7px;
+        }
     </style>
 
     <script>
-        async function checkStatus(id, repoName) {
-            const owner = 'MIbnEKhalid';
+        async function checkStatus(ownerN, id, repoName) {
+            const owner = `${ownerN}`;
             const repo = `${repoName}`;
-            //const token = '';
+            //const token = ''; // Ensure your token is securely handled.
             const url = `https://api.github.com/repos/${owner}/${repo}/actions/runs`;
             showMessage(id, 'Updating Progeress...');
             try {
@@ -212,10 +216,10 @@
         }
 
         const GithubRepos = [
-            { id: 'mainWeb', RepoName: 'MIbnEKhalid.github.io', open: 'true' },
-            { id: 'blogWeb', RepoName: 'Blog.MIbnEKhalid.github.io' },
-            { id: 'docWebdsaa', RepoName: 'SMP-Web' }
+            { id: 'mainWeb', owner: 'MIbnEKhalid', RepoName: 'MIbnEKhalid.github.io', open: 'true' },
+            { id: 'deplWeb', owner: 'MIbnEKhalid', RepoName: 'DeployStatus' }
         ];
+
 
         // Dynamically generate the repository status checks
         window.onload = function () {
@@ -238,11 +242,11 @@
                 <p class="status-p"><span class="commitMessage">Commit Message: {Message}</span></p>
             </div>
             <div class="error" style="display: none; color: red;"></div>
-            <button class="check-status" onclick="checkStatus('${repo.id}', '${repo.RepoName}')">Check Status</button>
+            <button class="check-status" onclick="checkStatus('${repo.owner}', '${repo.id}', '${repo.RepoName}')">Check Status</button>
             <div class="message-box" style="display: none;"></div>
         `;
                 container.appendChild(detailsElement);
-                checkStatus(repo.id, repo.RepoName);
+                checkStatus(repo.owner, repo.id, repo.RepoName);
 
             });
         }
