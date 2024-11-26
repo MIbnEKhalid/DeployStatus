@@ -155,8 +155,9 @@
         async function checkStatus(ownerN, id, repoName) {
             const owner = `${ownerN}`;
             const repo = `${repoName}`;
-            //const token = ''; // Ensure your token is securely handled.
-            const runsUrl = `https://api.github.com/repos/${owner}/${repo}/actions/runs`; 
+         //   const token = ''; // Ensure your token is securely handled.
+            const runsUrl = `https://api.github.com/repos/${owner}/${repo}/actions/runs`;
+            const repoUrl = `https://api.github.com/repos/${owner}/${repo}`;
             showMessage(id, 'Updating Progress...');
 
             try {
@@ -164,7 +165,7 @@
                 const runsResponse = await fetch(runsUrl, {
                     method: 'GET',
                     headers: {
-                        //'Authorization': `token ${token}`,
+                 //       'Authorization': `token ${token}`,
                         'Accept': 'application/vnd.github.v3+json'
                     }
                 });
@@ -174,7 +175,7 @@
                 const repoResponse = await fetch(repoUrl, {
                     method: 'GET',
                     headers: {
-                        //'Authorization': `token ${token}`,
+                      //  'Authorization': `token ${token}`,
                         'Accept': 'application/vnd.github.v3+json'
                     }
                 });
@@ -185,7 +186,7 @@
                     const status = latestRun.conclusion;
                     const message = status === 'success' ? 'Deployment successful!' : 'Deployment failed!';
                     const deployTime = status === 'success' ? new Date(latestRun.updated_at).toLocaleString() : 'Not available (deployment failed)';
-                    const pushTime = new Date(repoData.pushed_at).toLocaleString();
+                   const pushTime = new Date(repoData.pushed_at).toLocaleString();
 
                     // Update deployment status
                     const deployStatusElem = document.querySelector(`#${id} .deployStatus`);
