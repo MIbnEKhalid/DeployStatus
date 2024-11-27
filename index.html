@@ -9,6 +9,7 @@
         href="https://raw.githubusercontent.com/MIbnEKhalid/Blog.MIbnEKhalid.github.io/main/src/components/icons/adminIconShield.svg">
     <title>Deploy Status</title>
     <style>
+        
         :root {
             --primary-color: #4caf50;
             --secondary-color: #1e1e2f;
@@ -55,9 +56,8 @@
 
         }
 
-
         details[open] {
-            transform: scale(1.05);
+            transform: scale(1.00);
             margin-top: 30px;
         }
 
@@ -94,7 +94,6 @@
 
         .deployStatus {
             color: var(--neutral-color);
-            /* Default color for status */
         }
 
         .deployStatus.success {
@@ -149,45 +148,48 @@
         .error {
             margin-bottom: 7px;
         }
+
+        .links {
+            color: #007bff;
+            text-decoration: none;
+        }
+        
     </style>
 
     <script>
+        
         async function checkStatus(ownerN, id, repoName) {
             const owner = `${ownerN}`;
             const repo = `${repoName}`;
-         //   const token = ''; // Ensure your token is securely handled.
+            //   const token = ''; // Ensure your token is securely handled.
             const runsUrl = `https://api.github.com/repos/${owner}/${repo}/actions/runs`;
             const repoUrl = `https://api.github.com/repos/${owner}/${repo}`;
             showMessage(id, 'Updating Progress...');
-
             try {
                 // Fetch workflow runs
                 const runsResponse = await fetch(runsUrl, {
                     method: 'GET',
                     headers: {
-                 //       'Authorization': `token ${token}`,
+                        //       'Authorization': `token ${token}`,
                         'Accept': 'application/vnd.github.v3+json'
                     }
                 });
                 const runsData = await runsResponse.json();
-
                 // Fetch repository data to get push time
                 const repoResponse = await fetch(repoUrl, {
                     method: 'GET',
                     headers: {
-                      //  'Authorization': `token ${token}`,
+                        //  'Authorization': `token ${token}`,
                         'Accept': 'application/vnd.github.v3+json'
                     }
                 });
                 const repoData = await repoResponse.json();
-
                 if (runsData && runsData.workflow_runs && runsData.workflow_runs.length > 0) {
                     const latestRun = runsData.workflow_runs[0];
                     const status = latestRun.conclusion;
                     const message = status === 'success' ? 'Deployment successful!' : 'Deployment failed!';
                     const deployTime = status === 'success' ? new Date(latestRun.updated_at).toLocaleString() : 'Not available (deployment failed)';
-                   const pushTime = new Date(repoData.pushed_at).toLocaleString();
-
+                    const pushTime = new Date(repoData.pushed_at).toLocaleString();
                     // Update deployment status
                     const deployStatusElem = document.querySelector(`#${id} .deployStatus`);
                     deployStatusElem.innerText = `Deployment Status: ${message}`;
@@ -198,7 +200,6 @@
                         deployStatusElem.classList.add('error');
                         deployStatusElem.classList.remove('success');
                     }
-
                     document.querySelector(`#${id} .deploytime`).innerText = `Deployed at: ${deployTime}`;
                     document.querySelector(`#${id} .pushTime`).innerText = `Push Time: ${pushTime}`;
                     document.querySelector(`#${id} .commitTime`).innerText = `Latest Commit Time: ${new Date(latestRun.head_commit.timestamp).toLocaleString()}`;
@@ -228,7 +229,6 @@
             const messageBox = document.querySelector(`#${id} .message-box`);
             messageBox.innerText = message;
             messageBox.style.display = 'block';
-
             // Hide the message after 5 seconds
             setTimeout(() => {
                 messageBox.style.display = 'none';
@@ -240,21 +240,18 @@
             { id: 'deplWeb', owner: 'MIbnEKhalid', RepoName: 'DeployStatus' }
         ];
 
-
         // Dynamically generate the repository status checks
         window.onload = function () {
             const container = document.getElementById('status-container');
             GithubRepos.forEach(repo => {
                 const detailsElement = document.createElement('details');
                 detailsElement.id = repo.id;
-
                 // Add 'open' attribute if the 'open' property is set to 'true'
                 if (repo.open === 'true') {
                     detailsElement.setAttribute('open', 'true');
                 }
-                
                 detailsElement.innerHTML = `
-            <summary>${repo.RepoName} Status</summary>
+                        <summary> <a class="links" href="https://github.com/${repo.owner}/${repo.RepoName}" target="_blank"> ${repo.RepoName} </a> Status</summary>
             <div class="deployInfo">
                 <p class="status-p"> <span class="deployStatus">Deployment Status: None</span></p>
                 <p class="status-p"><span class="deploytime">Deployed at: 00/00/0000, 0:00:00 AM</span></p>
@@ -268,7 +265,6 @@
         `;
                 container.appendChild(detailsElement);
                 checkStatus(repo.owner, repo.id, repo.RepoName);
-
             });
         }
 
