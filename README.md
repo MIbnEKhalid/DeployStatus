@@ -1,14 +1,14 @@
 # DeployStatus
 
+Have you ever found yourself in a situation where you've deployed your website on GitHub Pages, Netlify, or Vercel and wanted to check if the deployment was successful—but thanks to countless open tabs of "how to center a div," you’d rather avoid opening yet another one to manually navigate to GitHub, your repository, and deployment logs?
 
+**DeployStatus** offers an effortless solution to monitor the deployment status of multiple web/build projects. With just a glance, you can see:
 
-This website monitors the deployment status of web/build projects hosted on GitHub Pages, Netlify, and Vercel. It provides details such as:
-- Deployment Status
-- Deployment Time (When Build Was Deployed)
-- Push Time (When Code Was Pushed To Github Repo) 
-- Commit time 
-- Commit message
-
+- **Deployment Status:** Whether the build was successful or not.
+- **Deployment Time:** When the build was deployed.
+- **Push Time:** When the code was pushed to the GitHub repository.
+- **Commit Time:** Timestamp of the latest commit.
+- **Commit Message:** Details of the latest commit.
 
 ## How to Use  
 
