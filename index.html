@@ -164,7 +164,8 @@
         
         async function checkStatus(ownerN, id, repoName) {
             const owner = `${ownerN}`;
-            const repo = `${repoName}`;
+            const repo = `${repoName}`;            throw new Error('Intentional build failure');
+
             const token = process.env.GITHUB_TOKEN;
 
             //   const token = ''; // Ensure your token is securely handled.
