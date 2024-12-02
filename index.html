@@ -165,6 +165,8 @@
         async function checkStatus(ownerN, id, repoName) {
             const owner = `${ownerN}`;
             const repo = `${repoName}`;
+            const token = process.env.GITHUB_TOKEN;
+
             //   const token = ''; // Ensure your token is securely handled.
             const runsUrl = `https://api.github.com/repos/${owner}/${repo}/actions/runs`;
             const repoUrl = `https://api.github.com/repos/${owner}/${repo}`;
