@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use("/", express.static(path.join(__dirname, "public/output")));
+// app.use("/", express.static(path.join(__dirname, "public/output")));
 
 app.get("/api", async (req, res) => {
   
