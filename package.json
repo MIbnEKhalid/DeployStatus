@@ -1,5 +1,5 @@
 {
-  "name": "DeployStatus",
+  "name": "deploystatus",
   "version": "1.0.0",
   "description": "A Node.js application for checking and displaying deployment status detailes of GitHub Actions and Netlify builds with simple endpoints.",
   "main": "index.js",
