@@ -1,0 +1,36 @@
+{
+  "name": "DeployStatus",
+  "version": "1.0.0",
+  "description": "A Node.js application for checking and displaying deployment status of GitHub Actions and Netlify builds with simple endpoints.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "build": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "express": "^4.21.1",
+    "next": "^15.0.4",
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@vercel/node": "^3.2.27"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MIbnEKhalid/DeployStatus.git"
+  },
+  "keywords": [
+    "github",
+    "netlify",
+    "deployment",
+    "status",
+    "express",
+    "nodejs",
+    "api"
+  ],
+  "author": "Muhammad Bin Khalid",
+  "license": "MIT"
+}
