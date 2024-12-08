@@ -36,6 +36,39 @@ const GithubRepos = [
 ```
 
 
+## 🚀 Building the Project
+
+To build the project, follow these steps:
+
+1. **Clone the repository:**
+    ```sh
+    git clone https://github.com/mibnekhalid/github-readme-deploystatus.git
+    cd github-readme-deploystatus
+    ```
+
+2. **Install dependencies:**
+    ```sh
+    npm install
+    ```
+
+3. **Build the project:**
+    ```sh
+    npm run build
+    ```
+
+4. **Run the project locally:**
+    ```sh
+    npm start
+    ```
+
+5. **Open your browser and navigate to:**
+    ```
+    http://localhost:3030
+    ```
+
+You should now see the project running locally on your machine.
+
+
 
 ## License
 
