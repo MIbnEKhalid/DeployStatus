@@ -77,7 +77,7 @@ function showMessage(id, message) {
 }
 
 const GithubRepos = [
-    { id: 'mainWeb', owner: 'MIbnEKhalid', RepoName: 'MIbnEKhalid.github.io', open: 'true' },
+    { id: 'mainWeb', owner: 'MIbnEKhalid', RepoName: 'Unilib.MIbnEKhalid.github.io', open: 'true' },
     { id: 'deplWeb', owner: 'MIbnEKhalid', RepoName: 'DeployStatus' }
 ];
 
